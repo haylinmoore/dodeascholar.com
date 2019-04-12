@@ -1,17 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      <h1 id="header">
+        Dodea GPA Calculator
+      </h1>
+    </div>
+    
+    <div id="message" v-if="message != ''">{{ message }}</div>
+    <div v-if="message == ''">
+      <gpa v-bind:data="semesterOne" title="Semester One"/>
+      <gpa v-bind:data="semesterTwo" title="Semester Two"/>
+    </div>
+    <login v-if="message != ''" id="login"/>
+    <a href="https://hampton.pw" id="by">Made with <span id="heart">❤</span> by Hampton Moore</a>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import gpa from './components/gpa.vue'
+import login from './components/login.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    gpa,
+    login
+  },
+  computed: {
+    semesterOne(){
+      return this.$store.getters.semesterOne
+    },
+    semesterTwo(){
+      return this.$store.getters.semesterTwo
+    },
+    message(){
+      return this.$store.getters.message
+    }
   }
 }
 </script>
@@ -22,7 +46,33 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  
+  background-color: #1E232B;
+  color: #f5f5f5;
+}
+
+#message {
+  margin-top: 40px;
+  font-size: 2.2rem;
+}
+
+#header {
+  font-size: 3rem;
+}
+
+#by {
+  color: #f5f5f5;
+}
+
+#login {
+  margin-bottom: 50px;
+}
+
+#heart {
+  transition: color 0.3s;
+}
+
+#by:hover #heart{
+  color: red;
 }
 </style>
