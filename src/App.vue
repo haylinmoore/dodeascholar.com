@@ -7,11 +7,13 @@
     </div>
     
     <div id="message" v-if="message != ''">{{ message }}</div>
+    <login v-if="message != ''" id="login"/>
+    
     <div v-if="message == ''">
       <gpa v-bind:data="semesterOne" title="Semester One"/>
       <gpa v-bind:data="semesterTwo" title="Semester Two"/>
     </div>
-    <login v-if="message != ''" id="login"/>
+    <br><br><br>
     <a href="https://hampton.pw" id="by">Made with <span id="heart">❤</span> by Hampton Moore</a>
   </div>
 </template>
@@ -62,10 +64,6 @@ export default {
 
 #by {
   color: #f5f5f5;
-}
-
-#login {
-  margin-bottom: 50px;
 }
 
 #heart {

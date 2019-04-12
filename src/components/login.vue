@@ -3,8 +3,8 @@
 		<input type="text" placeholder="Username" v-model="username"><br>
 		<input type="password" placeholder="Password" v-model="password"><br>
 		<select v-model="school">
-			<option value="buzz">Select School</option>
-			<option v-for="school in schools" v-bind:value="school[0]">
+			<option value="unselected" disabled>Select School</option>
+			<option v-for="school in schools" v-bind:value="school[0]" v-if="school[1].indexOf('Elementary') < 0">
     		{{ school[1] }}
   		</option>
 		</select>
@@ -21,8 +21,8 @@ export default {
   },
   data: function () {
     return {
-      school: "buzz",
-      username: "",
+      school: localStorage.getItem("school") || "unselected",
+      username: localStorage.getItem("username") || "",
       password: ""
     }
   },
@@ -34,6 +34,8 @@ export default {
   methods: {
     login: function (event) {
         var login = [this.username, this.password, this.school];
+        localStorage.setItem('school', this.school);
+        localStorage.setItem('username', this.username);
         this.$store.dispatch("getGrades", login);
     }
   }
