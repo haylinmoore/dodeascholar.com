@@ -59,7 +59,7 @@ export default new Vuex.Store({
 
 			context.commit("changeMessage", "Loading...");
 
-			axios.get('https://gradespeed.hampton.pw/getAllIDs/' + login[2] + '/' + login[0] + "/" + login[1])
+			axios.get('https://gradespeed.hampton.pw/' + login[2] + '/' + login[0] + "/" + login[1])
 				.then(function(response) {
 					var classes = response.data;
 
@@ -69,8 +69,8 @@ export default new Vuex.Store({
 						var gpa1 = [];
 						var gpa2 = [];
 						for (var i in classes) {
-							gpa1.push(letterToPoints(classes[i][7][0], classes[i][2][0].includes("AP")));
-							gpa2.push(letterToPoints(classes[i][11][0], classes[i][2][0].includes("AP")));
+							gpa1.push(letterToPoints(classes[i][7], classes[i][2].includes("AP")));
+							gpa2.push(letterToPoints(classes[i][11], classes[i][2].includes("AP")));
 						}
 
 						gpa1 = average(gpa1.filter(function(el) { return !isNaN(parseFloat(el)) && isFinite(el); })).toFixed(2);
