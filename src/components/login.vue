@@ -1,5 +1,6 @@
 <template>
 	<div v-on:keyup.enter="login">
+	  <div id="message">{{ message }}</div>
 		<input type="text" placeholder="Username" v-model="username"><br>
 		<input type="password" placeholder="Password" v-model="password"><br>
 		<select v-model="school">
@@ -9,77 +10,75 @@
   		</option>
 		</select>
 		<br>
+		<div id="tos"><a href="/tos.html">By using this service I give gpa.hampton.pw permission to scrape my grades in order to calculate GPA. Click for more details</a></div>
+		<br>
 		<button v-on:click="login" type="button">Login</button>
 	</div>
 </template>
 
 <script>
-export default {
-  name: 'gpa',
-  props: {
-    data: Object
-  },
-  data: function () {
-    return {
-      school: localStorage.getItem("school") || "unselected",
-      username: localStorage.getItem("username") || "",
-      password: ""
-    }
-  },
-  computed: {
-  	schools(){
-  		return this.$store.state.schools;
-  	}
-  },
-  methods: {
-    login: function (event) {
-        var login = [this.username, this.password, this.school];
-        localStorage.setItem('school', this.school);
-        localStorage.setItem('username', this.username);
-        this.$store.dispatch("getGrades", login);
-    }
-  }
-}
+	export default {
+		name: 'gpa',
+		props: {
+			data: Object
+		},
+		data: function() {
+			return {
+				school: localStorage.getItem("school") || "unselected",
+				username: localStorage.getItem("username") || "",
+				password: "",
+				approved: false
+			}
+		},
+		computed: {
+			schools() {
+				return this.$store.state.schools;
+			},
+			message() {
+				return this.$store.getters.message
+			}
+		},
+		methods: {
+			login: function(event) {
+				var login = [this.username, this.password, this.school];
+				localStorage.setItem('school', this.school);
+				localStorage.setItem('username', this.username);
+				this.$store.dispatch("getGrades", login);
+			}
+		}
+	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-button {
-  margin-top: 25px;
-  width: 100%;
-  max-width: 200px;
-  height: 75px;
-  background-color: #4183C4;
-  color: #f5f5f5;
-  border: none;
-  font-size: 1.4rem;
-  border-radius: 10px;
-  
-  transition: background-color 0.3s;
-  transition: border-radius 0.3s;
-}
+	input[type="text"],
+	input[type="password"] {
+		margin-top: 25px;
+		width: 100%;
+		max-width: 300px;
+		height: 35px;
+		border-radius: 5px;
+		text-indent: 10px;
+	}
 
-input {
-  margin-top: 25px;
-  width: 100%;
-  max-width: 300px;
-  height: 35px;
-  border-radius: 5px;
-  text-indent: 10px;
-}
+	#tos {
+		margin: 0 auto;
+		margin-top: 30px;
+		color: #f5f5f5;
+		width: 100%;
+		max-width: 300px;
+	}
 
-select {
-  margin-top: 25px;
-  width: 100%;
-  max-width: 300px;
-  height: 45px;
-  border-radius: 5px;
-  text-indent: 10px;
-}
+	#tos a {
+		color: #f5f5f5;
+	}
 
-button:hover {
-  background-color: #004A85;
-  cursor: pointer;
-  border-radius: 15px;
-}
+	select {
+		margin-top: 25px;
+		width: 100%;
+		max-width: 300px;
+		height: 45px;
+		border-radius: 5px;
+		text-indent: 10px;
+	}
 </style>
