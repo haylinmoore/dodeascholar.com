@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+var axios = require('axios');
+
 import schools from './schools.json';
 
 Vue.use(Vuex)

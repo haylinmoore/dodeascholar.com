@@ -2,7 +2,7 @@
     <div id="app">
       <div>
         <h1 id="header">
-          Dodea GPA Calculator
+          🎓 Dodea GPA Calculator 🎓
         </h1>
       </div>
       

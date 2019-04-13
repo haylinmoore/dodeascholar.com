@@ -1,13 +1,13 @@
 <template>
 	<div v-on:keyup.enter="login">
-	  <div id="message">{{ message }}</div>
+		<div id="message">{{ message }}</div>
 		<input type="text" placeholder="Username" v-model="username"><br>
 		<input type="password" placeholder="Password" v-model="password"><br>
 		<select v-model="school">
 			<option value="unselected" disabled>Select School</option>
-			<option v-for="school in schools" v-bind:value="school[0]" v-if="school[1].indexOf('Elementary') < 0">
-    		{{ school[1] }}
-  		</option>
+			<option v-for="school in schools" v-bind:value="school[0]" :key="school[0]">
+				{{ school[1] }}
+			</option>
 		</select>
 		<br>
 		<div id="tos"><a href="/tos.html">By using this service I give gpa.hampton.pw permission to scrape my grades in order to calculate GPA. Click for more details</a></div>
@@ -32,14 +32,14 @@
 		},
 		computed: {
 			schools() {
-				return this.$store.state.schools;
+				return this.$store.state.schools.filter(word => (!word[1].includes('Elementary')));
 			},
 			message() {
 				return this.$store.getters.message
 			}
 		},
 		methods: {
-			login: function(event) {
+			login: function() {
 				var login = [this.username, this.password, this.school];
 				localStorage.setItem('school', this.school);
 				localStorage.setItem('username', this.username);
