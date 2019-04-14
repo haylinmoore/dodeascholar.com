@@ -63,6 +63,10 @@ export default new Vuex.Store({
 				.then(function(response) {
 					var classes = response.data;
 
+					if (login[3]) {
+						console.log(classes);
+					}
+
 					if (classes[0] != "Error, Username/Password/SchoolID incorrect") {
 						context.commit("changeGrades", classes);
 
@@ -90,7 +94,7 @@ export default new Vuex.Store({
 
 function gpaToMessage(gpa) {
 	if (gpa == null) {
-		return "Loading"
+		return "Loading";
 	}
 	else if (gpa > 4) {
 		return "Principal’s Honors with distinction";
@@ -102,7 +106,7 @@ function gpaToMessage(gpa) {
 		return "High Honors";
 	}
 	else if (gpa < 3.5 && gpa >= 3) {
-		return "Honors"
+		return "Honors";
 	}
 	return "No Awards";
 }

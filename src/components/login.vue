@@ -12,6 +12,8 @@
 		<br>
 		<div id="tos"><a href="/tos.html">By using this service I give gpa.hampton.pw permission to scrape my grades in order to calculate GPA. Click for more details</a></div>
 		<br>
+		<input type="checkbox" v-model="debug" style="display:none;">
+		<br>
 		<button v-on:click="login" type="button">Login</button>
 	</div>
 </template>
@@ -27,7 +29,7 @@
 				school: localStorage.getItem("school") || "unselected",
 				username: localStorage.getItem("username") || "",
 				password: "",
-				approved: false
+				debug: false
 			}
 		},
 		computed: {
@@ -40,7 +42,7 @@
 		},
 		methods: {
 			login: function() {
-				var login = [this.username, this.password, this.school];
+				var login = [this.username, this.password, this.school, this.debug];
 				localStorage.setItem('school', this.school);
 				localStorage.setItem('username', this.username);
 				this.$store.dispatch("getGrades", login);
