@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios';
+import Vue from "vue";
+import Vuex from "vuex";
+import axios from "axios";
 
-import schools from './schools.json';
+import schools from "./schools.json";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
@@ -41,7 +41,6 @@ export default new Vuex.Store({
 	},
 	actions: {
 		getGrades(context, login) {
-
 			if (login[0] == "") {
 				context.commit("changeMessage", "Please type a username");
 				return;
@@ -59,7 +58,15 @@ export default new Vuex.Store({
 
 			context.commit("changeMessage", "Loading...");
 
-			axios.get('https://gradespeed.hampton.pw/' + login[2] + '/' + login[0] + "/" + login[1])
+			axios
+				.get(
+					"https://gradespeed.hampton.pw/" +
+						login[2] +
+						"/" +
+						login[0] +
+						"/" +
+						login[1]
+				)
 				.then(function(response) {
 					var classes = response.data;
 
@@ -73,39 +80,52 @@ export default new Vuex.Store({
 						var gpa1 = [];
 						var gpa2 = [];
 						for (var i in classes) {
-							gpa1.push(letterToPoints(classes[i][7], classes[i][2].includes("AP")));
-							gpa2.push(letterToPoints(classes[i][11], classes[i][2].includes("AP")));
+							gpa1.push(
+								letterToPoints(classes[i][7], classes[i][2].includes("AP"))
+							);
+							gpa2.push(
+								letterToPoints(classes[i][11], classes[i][2].includes("AP"))
+							);
 						}
 
-						gpa1 = average(gpa1.filter(function(el) { return !isNaN(parseFloat(el)) && isFinite(el); })).toFixed(2);
-						gpa2 = average(gpa2.filter(function(el) { return !isNaN(parseFloat(el)) && isFinite(el); })).toFixed(2);
+						gpa1 = average(
+							gpa1.filter(function(el) {
+								return !isNaN(parseFloat(el)) && isFinite(el);
+							})
+						).toFixed(2);
+						gpa2 = average(
+							gpa2.filter(function(el) {
+								return !isNaN(parseFloat(el)) && isFinite(el);
+							})
+						).toFixed(2);
 
 						context.commit("semesterGPA", [gpa1, gpa2]);
-						context.commit("semesterMessages", [gpaToMessage(gpa1), gpaToMessage(gpa2)]);
+						context.commit("semesterMessages", [
+							gpaToMessage(gpa1),
+							gpaToMessage(gpa2)
+						]);
 						context.commit("changeMessage", "");
+					} else {
+						context.commit(
+							"changeMessage",
+							"Username, Password, Or School Is Incorrect :("
+						);
 					}
-					else {
-						context.commit("changeMessage", "Username, Password, Or School Is Incorrect :(");
-					}
-				})
+				});
 		}
 	}
-})
+});
 
 function gpaToMessage(gpa) {
 	if (gpa == null) {
 		return "Loading";
-	}
-	else if (gpa > 4) {
+	} else if (gpa > 4) {
 		return "Principal’s Honors with distinction";
-	}
-	else if (gpa == 4) {
+	} else if (gpa == 4) {
 		return "Principal’s Honors";
-	}
-	else if (gpa < 4 && gpa >= 3.5) {
+	} else if (gpa < 4 && gpa >= 3.5) {
 		return "High Honors";
-	}
-	else if (gpa < 3.5 && gpa >= 3) {
+	} else if (gpa < 3.5 && gpa >= 3) {
 		return "Honors";
 	}
 	return "No Awards";
@@ -116,17 +136,13 @@ function letterToPoints(letter, AP) {
 
 	if (letter.includes("A")) {
 		points = 4;
-	}
-	else if (letter.includes("B")) {
+	} else if (letter.includes("B")) {
 		points = 3;
-	}
-	else if (letter.includes("C")) {
+	} else if (letter.includes("C")) {
 		points = 2;
-	}
-	else if (letter.includes("D")) {
+	} else if (letter.includes("D")) {
 		points = 1;
-	}
-	else if (letter.includes("F")) {
+	} else if (letter.includes("F")) {
 		points = 0;
 	}
 
@@ -135,7 +151,6 @@ function letterToPoints(letter, AP) {
 	}
 
 	return points;
-
 }
 
 var average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
