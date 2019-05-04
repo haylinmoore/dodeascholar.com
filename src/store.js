@@ -12,11 +12,30 @@ export default new Vuex.Store({
 		semesterMessages: ["Loading", "Loading"],
 		classes: [],
 		message: "Please Login",
-		schools: schools
+		schools: schools,
+		page: "login",
+		username: "",
+		password: "",
+		schoolID: "",
+		currentClass: {
+			overview: [],
+			breakdown: []
+		}
 	},
 	getters: {
 		message(state) {
 			return state.message;
+		},
+		page(state) {
+			return state.page;
+		},
+		classes(state) {
+			return state.classes.filter(function(sClass) {
+				return sClass[2][0] != "Seminar";
+			});
+		},
+		currentClass(state) {
+			return state.currentClass;
 		},
 		semesterOne(state) {
 			return { gpa: state.semester[0], message: state.semesterMessages[0] };
@@ -35,8 +54,19 @@ export default new Vuex.Store({
 		semesterMessages(state, messages) {
 			state.semesterMessages = messages;
 		},
+		changePage(state, page) {
+			state.page = page;
+		},
 		changeMessage(state, message) {
 			state.message = message;
+		},
+		changeClass(state, cClass) {
+			state.currentClass = cClass;
+		},
+		changeAccount(state, data) {
+			state.username = data[0];
+			state.password = data[1];
+			state.schoolID = data[2];
 		}
 	},
 	actions: {
@@ -59,20 +89,9 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 
 			axios
-				.get(
-					"https://gradespeed.hampton.pw/" +
-						login[2] +
-						"/" +
-						login[0] +
-						"/" +
-						login[1]
-				)
+				.get("https://gradespeed.hampton.pw/getAllIDs/" + login[2] + "/" + login[0] + "/" + login[1])
 				.then(function(response) {
 					var classes = response.data;
-
-					if (login[3]) {
-						console.log(classes);
-					}
 
 					if (classes[0] != "Error, Username/Password/SchoolID incorrect") {
 						context.commit("changeGrades", classes);
@@ -80,12 +99,8 @@ export default new Vuex.Store({
 						var gpa1 = [];
 						var gpa2 = [];
 						for (var i in classes) {
-							gpa1.push(
-								letterToPoints(classes[i][7], classes[i][2].includes("AP"))
-							);
-							gpa2.push(
-								letterToPoints(classes[i][11], classes[i][2].includes("AP"))
-							);
+							gpa1.push(letterToPoints(classes[i][7][0], classes[i][2][0].includes("AP")));
+							gpa2.push(letterToPoints(classes[i][11][0], classes[i][2][0].includes("AP")));
 						}
 
 						gpa1 = average(
@@ -100,17 +115,36 @@ export default new Vuex.Store({
 						).toFixed(2);
 
 						context.commit("semesterGPA", [gpa1, gpa2]);
-						context.commit("semesterMessages", [
-							gpaToMessage(gpa1),
-							gpaToMessage(gpa2)
-						]);
+						context.commit("semesterMessages", [gpaToMessage(gpa1), gpaToMessage(gpa2)]);
 						context.commit("changeMessage", "");
+						context.commit("changePage", "overview");
+						context.commit("changeAccount", [login[0], login[1], login[2]]);
 					} else {
-						context.commit(
-							"changeMessage",
-							"Username, Password, Or School Is Incorrect :("
-						);
+						context.commit("changeMessage", "Username, Password, Or School Is Incorrect :(");
 					}
+				});
+		},
+		changePage(context, page) {
+			context.commit("changePage", page);
+		},
+		loadClass(context, data) {
+			console.log(data);
+			//console.log(data.cClass, data.classID);
+			context.commit("changeMessage", "Loading...");
+			axios
+				.get(
+					`https://gradespeed.hampton.pw/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${
+						data.classID
+					}`
+				)
+				.then(function(response) {
+					context.commit("changeMessage", "");
+					console.log(response);
+					context.commit("changeClass", {
+						overview: data.cClass,
+						breakdown: response.data
+					});
+					context.commit("changePage", "classbreakdown");
 				});
 		}
 	}

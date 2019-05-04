@@ -1,11 +1,11 @@
 <template>
 	<div id="app">
-		<div>
-			<h1 id="header">🎓 Dodea GPA Calculator 🎓</h1>
-		</div>
+		<h1 id="header">DodeaScholar</h1>
 
-		<login v-if="message != ''" id="login"/>
-		<gpaDisplay v-if="message === ''"/>
+		<div id="message">{{ message }}</div>
+		<login v-if="page == 'login'" id="login"/>
+		<overview v-if="page == 'overview'"/>
+		<classbreakdown v-if="page == 'classbreakdown'"/>
 
 		<br>
 		<br>
@@ -18,16 +18,21 @@
 </template>
 
 <script>
-import login from "./components/login.vue";
-import gpaDisplay from "./components/gpaDisplay.vue";
+import login from "./pages/login/index.vue";
+import overview from "./pages/overview/index.vue";
+import classbreakdown from "./pages/classbreakdown/index.vue";
 
 export default {
 	name: "app",
 	components: {
 		login,
-		gpaDisplay
+		overview,
+		classbreakdown
 	},
 	computed: {
+		page() {
+			return this.$store.getters.page;
+		},
 		message() {
 			return this.$store.getters.message;
 		}
@@ -45,7 +50,7 @@ export default {
 
 #message {
 	margin-top: 40px;
-	font-size: 2.2rem;
+	font-size: 1.4rem;
 }
 
 #header {

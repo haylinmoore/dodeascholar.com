@@ -19,7 +19,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .gpa {
-	font-size: 2rem;
+	font-size: 1.2rem;
 	margin-top: 40px;
 }
 </style>

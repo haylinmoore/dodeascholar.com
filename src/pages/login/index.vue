@@ -1,6 +1,5 @@
 <template>
 	<div v-on:keyup.enter="login">
-		<div id="message">{{ message }}</div>
 		<input type="text" placeholder="Username" v-model="username">
 		<br>
 		<input type="password" placeholder="Password" v-model="password">
@@ -13,7 +12,7 @@
 		<div id="tos">
 			<a
 				href="/tos.html"
-			>By using this service I give gpa.hampton.pw permission to scrape my grades in order to calculate GPA. Click for more details</a>
+			>By using this service I give https://dodeascholar.com/ permission to scrape my grades in order to to show it to you, the user. Click for more details</a>
 		</div>
 		<br>
 		<input type="checkbox" v-model="debug" style="display:none;">
@@ -38,9 +37,7 @@ export default {
 	},
 	computed: {
 		schools() {
-			return this.$store.state.schools.filter(
-				word => !word[1].includes("Elementary")
-			);
+			return this.$store.state.schools;
 		},
 		message() {
 			return this.$store.getters.message;
@@ -48,7 +45,7 @@ export default {
 	},
 	methods: {
 		login: function() {
-			var login = [this.username, this.password, this.school, this.debug];
+			var login = [this.username, btoa(this.password), this.school, this.debug];
 			localStorage.setItem("school", this.school);
 			localStorage.setItem("username", this.username);
 			this.$store.dispatch("getGrades", login);
