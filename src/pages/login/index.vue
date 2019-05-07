@@ -56,6 +56,11 @@ export default {
 			localStorage.setItem("password", btoa(this.password));
 			this.$store.dispatch("getGrades", login);
 		}
+	},
+	beforeMount: function() {
+		if (localStorage.getItem("password")) {
+			this.login();
+		}
 	}
 };
 </script>

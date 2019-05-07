@@ -2,8 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-import router from "./router.js";
-
 import schools from "./schools.json";
 
 Vue.use(Vuex);
@@ -69,6 +67,9 @@ export default new Vuex.Store({
 		changeMessage(state, message) {
 			state.message = message;
 		},
+		changeGrade(state, data) {
+			state.currentClass.breakdown[data[0]][data[1] + 2][3] = data[2];
+		},
 		changeClass(state, cClass) {
 			state.currentClass = cClass;
 		},
@@ -86,6 +87,8 @@ export default new Vuex.Store({
 	actions: {
 		logout(context, router) {
 			context.commit("logout");
+			context.commit("changeMessage", "Please Login");
+			localStorage.removeItem("password");
 			router.push("/");
 		},
 		getGrades(context, login) {
@@ -146,6 +149,9 @@ export default new Vuex.Store({
 		},
 		changePage(context, page) {
 			context.commit("changePage", page);
+		},
+		changeGrade(context, data) {
+			context.commit("changeGrade", data);
 		},
 		loadClass(context, data) {
 			context.commit("changeMessage", "Loading...");

@@ -96,6 +96,13 @@ export default {
 	methods: {
 		back() {
 			this.$router.push("overview");
+		},
+		edit(cIndex, aIndex) {
+			this.$store.dispatch("changeGrade", [
+				cIndex,
+				aIndex,
+				Number(prompt("New Grade?"))
+			]);
 		}
 	}
 };
