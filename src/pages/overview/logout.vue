@@ -7,7 +7,7 @@ export default {
 	name: "logout",
 	methods: {
 		logout() {
-			this.$store.commit("changePage", "login");
+			this.$store.dispatch("logout", this.$router);
 		}
 	}
 };

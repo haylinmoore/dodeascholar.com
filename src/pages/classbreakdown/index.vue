@@ -95,7 +95,7 @@ export default {
 	},
 	methods: {
 		back() {
-			this.$store.dispatch("changePage", "overview");
+			this.$router.push("overview");
 		}
 	}
 };

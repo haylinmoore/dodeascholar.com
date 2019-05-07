@@ -2,10 +2,7 @@
 	<div id="app">
 		<h1 id="header">DodeaScholar</h1>
 
-		<div id="message">{{ message }}</div>
-		<login v-if="page == 'login'" id="login"/>
-		<overview v-if="page == 'overview'"/>
-		<classbreakdown v-if="page == 'classbreakdown'"/>
+		<router-view></router-view>
 
 		<br>
 		<br>
@@ -18,17 +15,8 @@
 </template>
 
 <script>
-import login from "./pages/login/index.vue";
-import overview from "./pages/overview/index.vue";
-import classbreakdown from "./pages/classbreakdown/index.vue";
-
 export default {
 	name: "app",
-	components: {
-		login,
-		overview,
-		classbreakdown
-	},
 	computed: {
 		page() {
 			return this.$store.getters.page;

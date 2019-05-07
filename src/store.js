@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
+import router from "./router.js";
+
 import schools from "./schools.json";
 
 Vue.use(Vuex);
@@ -25,6 +27,13 @@ export default new Vuex.Store({
 	getters: {
 		message(state) {
 			return state.message;
+		},
+		loggedIn(state) {
+			if (state.username) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 		page(state) {
 			return state.page;
@@ -67,9 +76,18 @@ export default new Vuex.Store({
 			state.username = data[0];
 			state.password = data[1];
 			state.schoolID = data[2];
+		},
+		logout(state) {
+			state.username = false;
+			state.password = false;
+			state.schoolID = false;
 		}
 	},
 	actions: {
+		logout(context, router) {
+			context.commit("logout");
+			router.push("/");
+		},
 		getGrades(context, login) {
 			if (login[0] == "") {
 				context.commit("changeMessage", "Please type a username");
@@ -119,6 +137,8 @@ export default new Vuex.Store({
 						context.commit("changeMessage", "");
 						context.commit("changePage", "overview");
 						context.commit("changeAccount", [login[0], login[1], login[2]]);
+						login[4].push("overview");
+						//this.$router.push("/overview");
 					} else {
 						context.commit("changeMessage", "Username, Password, Or School Is Incorrect :(");
 					}
@@ -128,8 +148,6 @@ export default new Vuex.Store({
 			context.commit("changePage", page);
 		},
 		loadClass(context, data) {
-			console.log(data);
-			//console.log(data.cClass, data.classID);
 			context.commit("changeMessage", "Loading...");
 			axios
 				.get(
@@ -139,12 +157,12 @@ export default new Vuex.Store({
 				)
 				.then(function(response) {
 					context.commit("changeMessage", "");
-					console.log(response);
 					context.commit("changeClass", {
 						overview: data.cClass,
 						breakdown: response.data
 					});
 					context.commit("changePage", "classbreakdown");
+					data.router.push("break");
 				});
 		}
 	}

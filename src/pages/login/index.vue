@@ -1,5 +1,6 @@
 <template>
 	<div v-on:keyup.enter="login">
+		<div id="message">{{ message }}</div>
 		<input type="text" placeholder="Username" v-model="username">
 		<br>
 		<input type="password" placeholder="Password" v-model="password">
@@ -11,11 +12,9 @@
 		<br>
 		<div id="tos">
 			<a
-				href="/tos.html"
-			>By using this service I give https://dodeascholar.com/ permission to scrape my grades in order to to show it to you, the user. Click for more details</a>
+				href="#/tos"
+			>By using this service I give https://dodeascholar.com/ permission to access my gradespeed account while grabbing the grades, nothing will ever be stored. Click for more details</a>
 		</div>
-		<br>
-		<input type="checkbox" v-model="debug" style="display:none;">
 		<br>
 		<button v-on:click="login" type="button">Login</button>
 	</div>
@@ -31,7 +30,7 @@ export default {
 		return {
 			school: localStorage.getItem("school") || "unselected",
 			username: localStorage.getItem("username") || "",
-			password: "",
+			password: atob(localStorage.getItem("password")) || "",
 			debug: false
 		};
 	},
@@ -45,9 +44,16 @@ export default {
 	},
 	methods: {
 		login: function() {
-			var login = [this.username, btoa(this.password), this.school, this.debug];
+			var login = [
+				this.username,
+				btoa(this.password),
+				this.school,
+				this.debug,
+				this.$router
+			];
 			localStorage.setItem("school", this.school);
 			localStorage.setItem("username", this.username);
+			localStorage.setItem("password", btoa(this.password));
 			this.$store.dispatch("getGrades", login);
 		}
 	}

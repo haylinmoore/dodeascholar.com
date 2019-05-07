@@ -12,17 +12,17 @@
 		<tr v-for="sClass in classes" :key="sClass">
 			<td>{{ sClass[2][0] }}</td>
 			<td>
-				<a href="#" v-on:click="classBreakdown(sClass,sClass[4][0])">{{ sClass[4][1] }}</a>
+				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[4][0])">{{ sClass[4][1] }}</a>
 			</td>
 			<td>
-				<a href="#" v-on:click="classBreakdown(sClass,sClass[5][0])">{{ sClass[5][1] }}</a>
+				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[5][0])">{{ sClass[5][1] }}</a>
 			</td>
 			<td>{{ sClass[7][0] }}</td>
 			<td>
-				<a href="#" v-on:click="classBreakdown(sClass,sClass[8][0])">{{ sClass[8][1] }}</a>
+				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[8][0])">{{ sClass[8][1] }}</a>
 			</td>
 			<td>
-				<a href="#" v-on:click="classBreakdown(sClass,sClass[9][0])">{{ sClass[9][1] }}</a>
+				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[9][0])">{{ sClass[9][1] }}</a>
 			</td>
 			<td>{{ sClass[11][0] }}</td>
 		</tr>
@@ -40,13 +40,13 @@ export default {
 	methods: {
 		classBreakdown(cClass, classID) {
 			classID = classID.substr(6);
-			console.log(classID, cClass);
 			this.$store.dispatch("loadClass", {
 				cClass,
 				classID,
 				username: this.$store.state.username,
 				password: this.$store.state.password,
-				schoolID: this.$store.state.schoolID
+				schoolID: this.$store.state.schoolID,
+				router: this.$router
 			});
 		}
 	}

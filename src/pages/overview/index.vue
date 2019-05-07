@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<div id="message">{{ message }}</div>
 		<gpaDisplay/>
 		<classes/>
 		<logout/>
@@ -17,6 +18,11 @@ export default {
 		classes,
 		gpaDisplay,
 		logout
+	},
+	computed: {
+		message() {
+			return this.$store.getters.message;
+		}
 	}
 };
 </script>
