@@ -30,7 +30,7 @@ export default {
 		return {
 			school: localStorage.getItem("school") || "unselected",
 			username: localStorage.getItem("username") || "",
-			password: atob(localStorage.getItem("password")) || "",
+			password: atob(localStorage.getItem("password") || ""),
 			debug: false
 		};
 	},

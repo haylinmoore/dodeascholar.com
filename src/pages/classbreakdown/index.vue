@@ -69,7 +69,9 @@ export default {
 						assignment[4] = 100;
 					}
 
-					if (assignment[3] && !assignment[5].includes("(Dropped)")) {
+					assignment[3] = Number(assignment[3]);
+
+					if (!isNaN(assignment[3]) && !assignment[5].includes("(Dropped)")) {
 						data.breakdown[i].total += Number(assignment[3]);
 						data.breakdown[i].max += Number(assignment[4]);
 					}
