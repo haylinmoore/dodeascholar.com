@@ -4,9 +4,11 @@
 			<th>Class Name</th>
 			<th>Quarter 1</th>
 			<th>Quarter 2</th>
+			<th>Semester 1 Exam</th>
 			<th>Semester 1</th>
 			<th>Quarter 3</th>
 			<th>Quarter 4</th>
+			<th>Semester 2 Exam</th>
 			<th>Semester 2</th>
 		</tr>
 		<tr v-for="sClass in classes" :key="sClass">
@@ -17,6 +19,7 @@
 			<td>
 				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[5][0])">{{ sClass[5][1] }}</a>
 			</td>
+			<td>{{ sClass[6][0] }}</td>
 			<td>{{ sClass[7][0] }}</td>
 			<td>
 				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[8][0])">{{ sClass[8][1] }}</a>
@@ -24,6 +27,7 @@
 			<td>
 				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[9][0])">{{ sClass[9][1] }}</a>
 			</td>
+			<td>{{ sClass[10][0] }}</td>
 			<td>{{ sClass[11][0] }}</td>
 		</tr>
 	</table>

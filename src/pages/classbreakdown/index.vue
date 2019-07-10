@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h2>{{ currentClass.overview[2][0] }} by {{ currentClass.overview[0][0] }}</h2>
-		<h3>Your current average in the class is: {{ currentClass.grade }}%</h3>
+		<h3>Average: {{ currentClass.grade }}%</h3>
 		<hr>
 		<div v-for="category in currentClass.breakdown" v-bind:key="category" class="category">
 			<h4>{{ category.value }}</h4>
@@ -71,11 +71,16 @@ export default {
 
 					if (
 						!isNaN(Number(assignment[3])) &&
-						!assignment[5].includes("(Dropped)") &&
+						!assignment[5].includes("Dropped") &&
 						assignment[3] != ""
 					) {
 						data.breakdown[i].total += Number(assignment[3]);
-						data.breakdown[i].max += Number(assignment[4]);
+						if (
+							!assignment[5].includes("Extra Credit") ||
+							!assignment[5].includes("Extra Credit")
+						) {
+							data.breakdown[i].max += Number(assignment[4]);
+						}
 					}
 				}
 

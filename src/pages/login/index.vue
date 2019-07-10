@@ -17,6 +17,7 @@
 		</div>
 		<br>
 		<button v-on:click="login" type="button">Login</button>
+		<br>
 	</div>
 </template>
 
@@ -85,7 +86,7 @@ input[type="password"] {
 	max-width: 300px;
 }
 
-#tos a {
+a {
 	color: #f5f5f5;
 }
 

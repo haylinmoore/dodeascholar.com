@@ -7,6 +7,10 @@
 		<br>
 		<br>
 		<br>
+		<a
+			href="https://volunteer.dodeascholar.com"
+		>Click here for the DodeaScholar volunteer time tracker</a>
+		<br>
 		<a href="https://hampton.pw" id="by">
 			Made with
 			<span id="heart">❤</span> by Hampton Moore
@@ -45,7 +49,7 @@ export default {
 	font-size: 3rem;
 }
 
-#by {
+a {
 	color: #f5f5f5;
 }
 
