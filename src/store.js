@@ -110,7 +110,14 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 
 			axios
-				.get("https://gradespeed.hampton.pw/getAllIDs/" + login[2] + "/" + login[0] + "/" + login[1])
+				.get(
+					"https://gradespeed.hampton.pw/getAllIDs/" +
+						login[2] +
+						"/" +
+						login[0] +
+						"/" +
+						login[1]
+				)
 				.then(function(response) {
 					var classes = response.data;
 
@@ -120,9 +127,21 @@ export default new Vuex.Store({
 						var gpa1 = [];
 						var gpa2 = [];
 						for (var i in classes) {
-							gpa1.push(letterToPoints(classes[i][7][0], classes[i][2][0].includes("AP")));
-							gpa2.push(letterToPoints(classes[i][11][0], classes[i][2][0].includes("AP")));
+							gpa1.push(
+								letterToPoints(
+									classes[i][7][0],
+									classes[i][2][0].includes("AP")
+								)
+							);
+							gpa2.push(
+								letterToPoints(
+									classes[i][11][0],
+									classes[i][2][0].includes("AP")
+								)
+							);
 						}
+
+						//console.log(gpa1);
 
 						gpa1 = average(
 							gpa1.filter(function(el) {
@@ -136,14 +155,20 @@ export default new Vuex.Store({
 						).toFixed(2);
 
 						context.commit("semesterGPA", [gpa1, gpa2]);
-						context.commit("semesterMessages", [gpaToMessage(gpa1), gpaToMessage(gpa2)]);
+						context.commit("semesterMessages", [
+							gpaToMessage(gpa1),
+							gpaToMessage(gpa2)
+						]);
 						context.commit("changeMessage", "");
 						context.commit("changePage", "overview");
 						context.commit("changeAccount", [login[0], login[1], login[2]]);
 						login[4].push("overview");
 						//this.$router.push("/overview");
 					} else {
-						context.commit("changeMessage", "Username, Password, Or School Is Incorrect :(");
+						context.commit(
+							"changeMessage",
+							"Username, Password, Or School Is Incorrect :("
+						);
 					}
 				});
 		},
@@ -157,9 +182,7 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 			axios
 				.get(
-					`https://gradespeed.hampton.pw/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${
-						data.classID
-					}`
+					`https://gradespeed.hampton.pw/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${data.classID}`
 				)
 				.then(function(response) {
 					context.commit("changeMessage", "");
@@ -191,22 +214,27 @@ function gpaToMessage(gpa) {
 
 function letterToPoints(letter, AP) {
 	var points = undefined;
-
-	if (letter.includes("A")) {
+	//console.log(letter);
+	if (letter.includes("A") || letter >= 90) {
 		points = 4;
-	} else if (letter.includes("B")) {
+	} else if (letter.includes("B") || letter >= 80) {
 		points = 3;
-	} else if (letter.includes("C")) {
+	} else if (letter.includes("C") || letter >= 70) {
 		points = 2;
-	} else if (letter.includes("D")) {
+	} else if (letter.includes("D") || letter >= 60) {
 		points = 1;
-	} else if (letter.includes("F")) {
+	} else if (
+		letter.includes("F") ||
+		(letter < 60 && letter.trim().length != 0)
+	) {
 		points = 0;
 	}
 
 	if (AP && points != 0 && points != undefined) {
 		points += 1;
 	}
+
+	console.log(letter, AP, points);
 
 	return points;
 }
