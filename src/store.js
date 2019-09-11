@@ -234,7 +234,7 @@ function letterToPoints(letter, AP) {
 		points += 1;
 	}
 
-	console.log(letter, AP, points);
+	//console.log(letter, AP, points);
 
 	return points;
 }
