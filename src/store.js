@@ -124,21 +124,42 @@ export default new Vuex.Store({
 					if (classes[0] != "Error, Username/Password/SchoolID incorrect") {
 						context.commit("changeGrades", classes);
 
+						for (let i in classes) {
+							if (classes[i].length == 10) {
+								console.log(classes[i]);
+								if (classes[i][5][1] != " ") {
+									classes[i].splice(7, 0, classes[i][5]);
+								} else {
+									classes[i].splice(7, 0, classes[i][4]);
+								}
+
+								if (classes[i][8][1] != " ") {
+									classes[i].splice(11, 0, classes[i][8]);
+								} else {
+									classes[i].splice(11, 0, classes[i][7]);
+								}
+							}
+						}
+
 						var gpa1 = [];
 						var gpa2 = [];
 						for (var i in classes) {
-							gpa1.push(
-								letterToPoints(
-									classes[i][7][0],
-									classes[i][2][0].includes("AP")
-								)
-							);
-							gpa2.push(
-								letterToPoints(
-									classes[i][11][0],
-									classes[i][2][0].includes("AP")
-								)
-							);
+							if (classes[i][7]) {
+								gpa1.push(
+									letterToPoints(
+										classes[i][7][0],
+										classes[i][2][0].includes("AP")
+									)
+								);
+							}
+							if (classes[i][11]) {
+								gpa2.push(
+									letterToPoints(
+										classes[i][11][0],
+										classes[i][2][0].includes("AP")
+									)
+								);
+							}
 						}
 
 						//console.log(gpa1);
