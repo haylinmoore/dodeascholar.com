@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-
+let api = "https://dodeascholar.hampton.workers.dev";
 import schools from "./schools.json";
 
 Vue.use(Vuex);
@@ -110,14 +110,7 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 
 			axios
-				.get(
-					"https://gradespeed.hampton.pw/getAllIDs/" +
-						login[2] +
-						"/" +
-						login[0] +
-						"/" +
-						login[1]
-				)
+				.get(api + "/getAllIDs/" + login[2] + "/" + login[0] + "/" + login[1])
 				.then(function(response) {
 					var classes = response.data;
 
@@ -126,18 +119,21 @@ export default new Vuex.Store({
 
 						for (let i in classes) {
 							if (classes[i].length == 10) {
-								console.log(classes[i]);
-								if (classes[i][5][1] != " ") {
-									classes[i].splice(7, 0, classes[i][5]);
+								/*console.log(classes[i]);
+								if (classes[i][5][0] != " ") {
+									classes[i].splice(7, 0, [...classes[i][5]]);
 								} else {
-									classes[i].splice(7, 0, classes[i][4]);
+									classes[i].splice(7, 0, [...classes[i][4]]);
 								}
 
-								if (classes[i][8][1] != " ") {
-									classes[i].splice(11, 0, classes[i][8]);
+								if (classes[i][8][0] != " ") {
+									classes[i].splice(11, 0, [...classes[i][8]]);
 								} else {
-									classes[i].splice(11, 0, classes[i][7]);
-								}
+									classes[i].splice(11, 0, [...classes[i][7]]);
+								}*/
+								classes[i].splice(11, 0, " ");
+								classes[i].splice(7, 0, " ");
+								console.log(classes[i]);
 							}
 						}
 
@@ -203,7 +199,7 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 			axios
 				.get(
-					`https://gradespeed.hampton.pw/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${data.classID}`
+					`${api}/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${data.classID}`
 				)
 				.then(function(response) {
 					context.commit("changeMessage", "");
