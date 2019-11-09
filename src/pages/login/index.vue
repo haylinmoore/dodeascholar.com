@@ -29,7 +29,7 @@ export default {
 	},
 	data: function() {
 		return {
-			school: localStorage.getItem("school") || "unselected",
+			school: localStorage.getItem("school") || 55132,
 			username: localStorage.getItem("username") || "",
 			password: atob(localStorage.getItem("password") || ""),
 			debug: false

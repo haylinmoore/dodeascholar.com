@@ -20,7 +20,8 @@ export default new Vuex.Store({
 		currentClass: {
 			overview: [],
 			breakdown: []
-		}
+		},
+		cookie: ""
 	},
 	getters: {
 		message(state) {
@@ -73,6 +74,9 @@ export default new Vuex.Store({
 		changeClass(state, cClass) {
 			state.currentClass = cClass;
 		},
+		setCookie(state, data){
+			state.cookie = data;
+		},
 		changeAccount(state, data) {
 			state.username = data[0];
 			state.password = data[1];
@@ -110,7 +114,11 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 
 			axios
-				.get(api + "/getAllIDs/" + login[2] + "/" + login[0] + "/" + login[1])
+				.get(api + "/v2/login/" + login[2] + "/" + login[0] + "/" + login[1])
+				.then(function(response){
+					context.commit("setCookie", response.data);
+					return axios.get(api + "/v2/getClasses/"+response.data);
+				})
 				.then(function(response) {
 					var classes = response.data;
 
@@ -119,21 +127,8 @@ export default new Vuex.Store({
 
 						for (let i in classes) {
 							if (classes[i].length == 10) {
-								/*console.log(classes[i]);
-								if (classes[i][5][0] != " ") {
-									classes[i].splice(7, 0, [...classes[i][5]]);
-								} else {
-									classes[i].splice(7, 0, [...classes[i][4]]);
-								}
-
-								if (classes[i][8][0] != " ") {
-									classes[i].splice(11, 0, [...classes[i][8]]);
-								} else {
-									classes[i].splice(11, 0, [...classes[i][7]]);
-								}*/
 								classes[i].splice(11, 0, " ");
 								classes[i].splice(7, 0, " ");
-								console.log(classes[i]);
 							}
 						}
 
@@ -199,7 +194,7 @@ export default new Vuex.Store({
 			context.commit("changeMessage", "Loading...");
 			axios
 				.get(
-					`${api}/getClassBreakdown/${data.schoolID}/${data.username}/${data.password}/${data.classID}`
+					`${api}/v2/getClass/${data.classID}/${context.state.cookie}`
 				)
 				.then(function(response) {
 					context.commit("changeMessage", "");
