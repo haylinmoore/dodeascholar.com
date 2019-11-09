@@ -16,18 +16,14 @@
 		<h1>Open Source</h1>
 		<p>
 			Every part of this project is open source!
-			<br>The Frontend
+			<br />The Frontend
 			<a
 				href="https://github.com/herohamp/DodeaGPACalculator"
 			>https://github.com/herohamp/DodeaGPACalculator</a>
-			<br>powered by The backend server
+			<br />powered by the cloudflare worker
 			<a
-				href="https://github.com/herohamp/gradespeed.hampton.pw"
-			>https://github.com/herohamp/gradespeed.hampton.pw</a>
-			<br>which uses the node module
-			<a
-				href="https://github.com/herohamp/gradespeed-api-dodea"
-			>https://github.com/herohamp/gradespeed-api-dodea</a>
+				href="https://github.com/herohamp/DodeaScholarWorker"
+			>https://github.com/herohamp/DodeaScholarWorker</a>
 		</p>
 		<button v-on:click="back" type="button">Back</button>
 	</div>
