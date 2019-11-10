@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-let api = "https://dodeascholar.hampton.workers.dev";
+let api = "https://dodeascholar.com";
 import schools from "./schools.json";
 
 Vue.use(Vuex);
