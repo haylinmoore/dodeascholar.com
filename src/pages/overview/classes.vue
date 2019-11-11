@@ -66,7 +66,7 @@ table {
 	margin: auto;
 	margin-top: 30px;
 	border-collapse: collapse;
-	max-width: 850px;
+	max-width: 100%;
 	overflow: auto;
 	overflow-x: auto;
 	white-space: nowrap;
