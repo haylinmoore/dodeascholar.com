@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<gpa v-bind:data="semesterOne" title="Semester One GPA" />
-		<gpa v-bind:data="semesterTwo" title="Semester Two GPA" />
+		<gpa v-bind:data="semesterOne" v-if="!isNaN(semesterOne.gpa)" title="Semester One GPA" />
+		<gpa v-bind:data="semesterTwo" v-if="!isNaN(semesterTwo.gpa)" title="Semester Two GPA" />
 	</div>
 </template>
 
