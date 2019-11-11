@@ -123,6 +123,8 @@ export default new Vuex.Store({
 					var classes = response.data;
 
 					if (classes[0] != "Error, Username/Password/SchoolID incorrect") {
+						classes.pop();
+						classes = classes.filter(course => course[2][0] != "Virtual School Course");
 						context.commit("changeGrades", classes);
 
 						for (let i in classes) {
