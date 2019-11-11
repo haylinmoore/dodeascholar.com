@@ -126,7 +126,7 @@ export default new Vuex.Store({
 						context.commit("changeGrades", classes);
 
 						for (let i in classes) {
-
+							classes[i][2][0] = renameClasses(classes[i][2][0]);
 							if (classes[i].length == 10) {
 								classes[i].splice(7, 0, " ");
 								let semester1 = [letterToFGPA(classes[i][4][1] || " "),letterToFGPA(classes[i][5][1] || " "),letterToFGPA(classes[i][6][0] || " ")];
@@ -323,6 +323,15 @@ function letterToPoints(letter, AP) {
 	//console.log(letter, AP, points);
 
 	return points;
+}
+
+function renameClasses(name){
+	name = name.replace("Honors", "H");
+	name = name.replace("Computer Science", "CS");
+	name = name.replace("Computer Sci", "CS");
+	name = name.replace("Literature", "Lit");
+
+	return name;
 }
 
 var average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
