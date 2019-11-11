@@ -2,7 +2,9 @@
 	<div>
 		<div id="message">{{ message }}</div>
 		<gpaDisplay/>
-		<classes/>
+		<center>
+			<classes/>
+		</center>
 		<logout/>
 	</div>
 </template>

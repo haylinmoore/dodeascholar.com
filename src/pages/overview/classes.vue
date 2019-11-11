@@ -2,14 +2,14 @@
 	<table>
 		<tr>
 			<th>Class Name</th>
-			<th>Quarter 1</th>
-			<th>Quarter 2</th>
-			<th>Semester 1 Exam</th>
-			<th>Semester 1</th>
-			<th>Quarter 3</th>
-			<th>Quarter 4</th>
-			<th>Semester 2 Exam</th>
-			<th>Semester 2</th>
+			<th>Q1</th>
+			<th>Q2</th>
+			<th>S1 Exam</th>
+			<th>S1</th>
+			<th>Q3</th>
+			<th>Q4</th>
+			<th>S2 Exam</th>
+			<th>S2</th>
 		</tr>
 		<tr v-for="sClass in classes" :key="sClass">
 			<td>{{ sClass[2][0] }}</td>
@@ -68,7 +68,6 @@ table {
 	border-collapse: collapse;
 	max-width: 850px;
 	overflow: auto;
-	display: block;
 	overflow-x: auto;
 	white-space: nowrap;
 }
