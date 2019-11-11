@@ -126,9 +126,25 @@ export default new Vuex.Store({
 						context.commit("changeGrades", classes);
 
 						for (let i in classes) {
+
 							if (classes[i].length == 10) {
+								classes[i].splice(7, 0, " ");
+								let semester1 = [letterToFGPA(classes[i][4][1] || " "),letterToFGPA(classes[i][5][1] || " "),letterToFGPA(classes[i][6][0] || " ")];
+								semester1 = average(
+									semester1.filter(function(el) {
+									return !isNaN(parseFloat(el)) && isFinite(el);
+								}))
+								classes[i][7] = [FGPAToLetter(semester1), "?"];
+
 								classes[i].splice(11, 0, " ");
-								classes[i].splice(7, 0, " ");
+								
+								let semester2 = [letterToFGPA(classes[i][8][1] || " "),letterToFGPA(classes[i][9][1] || " "),letterToFGPA(classes[i][10][0] || " ")];
+								semester2 = average(
+									semester2.filter(function(el) {
+									return !isNaN(parseFloat(el)) && isFinite(el);
+								}))
+								classes[i][11] = [FGPAToLetter(semester2), "?"];
+								
 							}
 						}
 
@@ -223,6 +239,64 @@ function gpaToMessage(gpa) {
 	}
 	return "No Awards";
 }
+
+function letterToFGPA(letter){
+	let point = 0;
+  
+	if (letter.includes("A")){
+		point += 4;
+	}
+  
+	if (letter.includes("B")){
+		point += 3;
+	}
+  
+	if (letter.includes("C")){
+		point += 2;
+	}
+  
+	if (letter.includes("D")){
+		point += 1;
+	}
+  
+	if (letter.includes("-")){
+		point -= 0.25;
+	}
+  
+	if (letter.includes("+")){
+		point += 0.25;
+	}
+
+	if (letter.trim() == ""){
+		return NaN
+	}
+  
+	return point;
+  }
+  
+  function FGPAToLetter(fGPA){
+	let letter = "";
+	
+	if (fGPA >= 3.75){
+		letter += "A"
+	} else if (fGPA >= 2.75){
+		letter += "B"
+	} else if (fGPA >= 1.75){
+		letter += "C"
+	} else if (fGPA >= 0.75){
+		letter += "D"
+	}
+  
+	if (fGPA%1 <= 0.25 && fGPA%1 > 0){
+		letter += "+"
+	}
+  
+	if (fGPA%1 >= 0.60){
+		letter += "+"
+	}
+  
+	return letter;
+  }
 
 function letterToPoints(letter, AP) {
 	var points = undefined;

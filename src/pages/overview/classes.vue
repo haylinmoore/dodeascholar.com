@@ -20,7 +20,7 @@
 				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[5][0])">{{ sClass[5][1] }}</a>
 			</td>
 			<td>{{ sClass[6][0] }}</td>
-			<td>{{ sClass[7][0] }}</td>
+			<td>{{ sClass[7][0] }}<a href="javascript:;" v-on:click="guess()" class="guess" title="Due to an issue with gradespeed your semester grade for this class is not know and must be guessed" v-if="sClass[7][1] == '?'">?</a></td>
 			<td>
 				<a href="javascript:;" v-on:click="classBreakdown(sClass,sClass[8][0])">{{ sClass[8][1] }}</a>
 			</td>
@@ -52,6 +52,9 @@ export default {
 				schoolID: this.$store.state.schoolID,
 				router: this.$router
 			});
+		},
+		guess(){
+			alert("Due to an issue with gradespeed your semester grade for this class is not know and must be guessed")
 		}
 	}
 };
@@ -78,6 +81,10 @@ td {
 }
 tr:nth-child(even) {
 	background-color: #4183c4;
+}
+
+.guess {
+	text-decoration: underline;
 }
 
 a {
