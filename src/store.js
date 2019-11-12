@@ -38,7 +38,7 @@ export default new Vuex.Store({
 			return state.page;
 		},
 		classes(state) {
-			return state.classes.filter(function(sClass) {
+			return state.classes.filter(function (sClass) {
 				return sClass[2][0] != "Seminar";
 			});
 		},
@@ -46,10 +46,16 @@ export default new Vuex.Store({
 			return state.currentClass;
 		},
 		semesterOne(state) {
-			return { gpa: state.semester[0], message: state.semesterMessages[0] };
+			return {
+				gpa: state.semester[0],
+				message: state.semesterMessages[0]
+			};
 		},
 		semesterTwo(state) {
-			return { gpa: state.semester[1], message: state.semesterMessages[1] };
+			return {
+				gpa: state.semester[1],
+				message: state.semesterMessages[1]
+			};
 		}
 	},
 	mutations: {
@@ -74,7 +80,7 @@ export default new Vuex.Store({
 		changeClass(state, cClass) {
 			state.currentClass = cClass;
 		},
-		setCookie(state, data){
+		setCookie(state, data) {
 			state.cookie = data;
 		},
 		changeAccount(state, data) {
@@ -115,11 +121,11 @@ export default new Vuex.Store({
 
 			axios
 				.get(api + "/v2/login/" + login[2] + "/" + login[0] + "/" + login[1])
-				.then(function(response){
+				.then(function (response) {
 					context.commit("setCookie", response.data);
-					return axios.get(api + "/v2/getClasses/"+response.data);
+					return axios.get(api + "/v2/getClasses/" + response.data);
 				})
-				.then(function(response) {
+				.then(function (response) {
 					var classes = response.data;
 
 					if (classes[0] != "Error, Username/Password/SchoolID incorrect") {
@@ -131,22 +137,22 @@ export default new Vuex.Store({
 							classes[i][2][0] = renameClasses(classes[i][2][0]);
 							if (classes[i].length == 10) {
 								classes[i].splice(7, 0, " ");
-								let semester1 = [letterToFGPA(classes[i][4][1] || " "),letterToFGPA(classes[i][5][1] || " "),letterToFGPA(classes[i][6][0] || " ")];
+								let semester1 = [letterToValue(classes[i][4][1] || " "), letterToValue(classes[i][5][1] || " "), letterToValue(classes[i][6][0] || " ")];
 								semester1 = average(
-									semester1.filter(function(el) {
-									return !isNaN(parseFloat(el)) && isFinite(el);
-								}))
-								classes[i][7] = [FGPAToLetter(semester1), "?"];
+									semester1.filter(function (el) {
+										return !isNaN(parseFloat(el)) && isFinite(el);
+									}))
+								classes[i][7] = [valueToLetter(semester1), "?"];
 
 								classes[i].splice(11, 0, " ");
-								
-								let semester2 = [letterToFGPA(classes[i][8][1] || " "),letterToFGPA(classes[i][9][1] || " "),letterToFGPA(classes[i][10][0] || " ")];
+
+								let semester2 = [letterToValue(classes[i][8][1] || " "), letterToValue(classes[i][9][1] || " "), letterToValue(classes[i][10][0] || " ")];
 								semester2 = average(
-									semester2.filter(function(el) {
-									return !isNaN(parseFloat(el)) && isFinite(el);
-								}))
-								classes[i][11] = [FGPAToLetter(semester2), "?"];
-								
+									semester2.filter(function (el) {
+										return !isNaN(parseFloat(el)) && isFinite(el);
+									}))
+								classes[i][11] = [valueToLetter(semester2), "?"];
+
 							}
 						}
 
@@ -174,12 +180,12 @@ export default new Vuex.Store({
 						//console.log(gpa1);
 
 						gpa1 = average(
-							gpa1.filter(function(el) {
+							gpa1.filter(function (el) {
 								return !isNaN(parseFloat(el)) && isFinite(el);
 							})
 						).toFixed(2);
 						gpa2 = average(
-							gpa2.filter(function(el) {
+							gpa2.filter(function (el) {
 								return !isNaN(parseFloat(el)) && isFinite(el);
 							})
 						).toFixed(2);
@@ -214,7 +220,7 @@ export default new Vuex.Store({
 				.get(
 					`${api}/v2/getClass/${data.classID}/${context.state.cookie}`
 				)
-				.then(function(response) {
+				.then(function (response) {
 					context.commit("changeMessage", "");
 					context.commit("changeClass", {
 						overview: data.cClass,
@@ -242,63 +248,81 @@ function gpaToMessage(gpa) {
 	return "No Awards";
 }
 
-function letterToFGPA(letter){
-	let point = 0;
-  
-	if (letter.includes("A")){
-		point += 4;
-	}
-  
-	if (letter.includes("B")){
-		point += 3;
-	}
-  
-	if (letter.includes("C")){
-		point += 2;
-	}
-  
-	if (letter.includes("D")){
-		point += 1;
-	}
-  
-	if (letter.includes("-")){
-		point -= 0.25;
-	}
-  
-	if (letter.includes("+")){
-		point += 0.25;
+function letterToValue(letter) {
+	let val = NaN;
+	switch (letter) {
+		case "A+":
+			val = 98;
+			break;
+		case "A":
+			val = 95;
+			break;
+		case "A-":
+			val = 91;
+			break;
+		case "B+":
+			val = 88;
+			break;
+		case "B":
+			val = 85;
+			break;
+		case "B-":
+			val = 81;
+			break;
+		case "C+":
+			val = 78;
+			break;
+		case "C":
+			val = 75;
+			break;
+		case "C-":
+			val = 71;
+			break;
+		case "D+":
+			val = 68;
+			break;
+		case "D":
+			val = 65;
+			break;
+		case "D-":
+			val = 61;
+			break;
+		case "F":
+			val = 50;
+			break;
 	}
 
-	if (letter.trim() == ""){
-		return NaN
-	}
-  
-	return point;
-  }
-  
-  function FGPAToLetter(fGPA){
+	return val;
+
+}
+
+function valueToLetter(val) {
 	let letter = "";
-	
-	if (fGPA >= 3.75){
+	let tensPlace = Math.floor(val/10);
+	let onesPlace = val%10;
+
+	if (tensPlace == 9) {
 		letter += "A"
-	} else if (fGPA >= 2.75){
+	} else if (tensPlace == 8) {
 		letter += "B"
-	} else if (fGPA >= 1.75){
+	} else if (tensPlace == 7) {
 		letter += "C"
-	} else if (fGPA >= 0.75){
+	} else if (tensPlace == 6) {
 		letter += "D"
+	} else if (tensPlace == 5) {
+		letter += "F"
 	}
-  
-	if (fGPA%1 <= 0.25 && fGPA%1 > 0){
+
+	if (onesPlace >= 7) {
 		letter += "+"
 	}
-  
-	if (fGPA%1 >= 0.60){
+
+	if (onesPlace <= 2) {
 		letter += "+"
 	}
-  
+
 	return letter;
-  }
+}
 
 function letterToPoints(letter, AP) {
 	var points = undefined;
@@ -327,7 +351,7 @@ function letterToPoints(letter, AP) {
 	return points;
 }
 
-function renameClasses(name){
+function renameClasses(name) {
 	name = name.replace("Honors", "H");
 	name = name.replace("Computer Science", "CS");
 	name = name.replace("Computer Sci", "CS");
