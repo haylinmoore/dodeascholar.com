@@ -9,7 +9,7 @@
 		"deploy": "vue-cli-service build && rsync ./dist/ root@ssh.hampton.pw:/var/www/gpa.hampton.pw -r"
 	},
 	"dependencies": {
-		"axios": "^0.18.1",
+		"axios": "^0.21.1",
 		"core-js": "^2.6.5",
 		"vue": "^2.6.6",
 		"vue-router": "^3.0.6",
